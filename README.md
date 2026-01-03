@@ -1,4 +1,4 @@
-# Fashion Portfolio Website - Setup Instructions
+# Portfolio Website - Setup Instructions
 
 ## Folder Structure
 
