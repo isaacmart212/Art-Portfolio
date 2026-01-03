@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Fashion Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-sand: #f5f1eb;
+            --color-clay: #e8dfd4;
+            --color-stone: #c4b5a0;
+            --color-charcoal: #3a3632;
+            --color-ink: #2a2622;
+            --color-bamboo: #a8b5a0;
+            --spacing-xs: 1rem;
+            --spacing-sm: 2rem;
+            --spacing-md: 4rem;
+            --spacing-lg: 6rem;
+            --spacing-xl: 8rem;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background-color: var(--color-sand);
+            color: var(--color-ink);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Subtle texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.02) 2px, rgba(0,0,0,.02) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.02) 2px, rgba(0,0,0,.02) 4px);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, var(--color-sand) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: var(--color-charcoal);
+            opacity: 0;
+            animation: fadeInDown 1s ease-out 0.3s forwards;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-sm);
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            color: var(--color-charcoal);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            position: relative;
+            transition: color 0.4s ease;
+            opacity: 0;
+            animation: fadeInDown 1s ease-out forwards;
+        }
+
+        .nav-links li:nth-child(1) a { animation-delay: 0.4s; }
+        .nav-links li:nth-child(2) a { animation-delay: 0.5s; }
+        .nav-links li:nth-child(3) a { animation-delay: 0.6s; }
+        .nav-links li:nth-child(4) a { animation-delay: 0.7s; }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--color-bamboo);
+            transition: width 0.4s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-bamboo);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md);
+            position: relative;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-charcoal);
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 0.5s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-stone);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 400;
+            margin-bottom: var(--spacing-md);
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 0.8s forwards;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--color-charcoal);
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 1.1s forwards;
+        }
+
+        /* Decorative element */
+        .zen-line {
+            width: 60px;
+            height: 1px;
+            background-color: var(--color-bamboo);
+            margin: var(--spacing-sm) auto;
+            opacity: 0;
+            animation: expandWidth 1s ease-out 1.4s forwards;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: var(--spacing-xl) var(--spacing-md);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-charcoal);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .portfolio-item {
+            position: relative;
+            aspect-ratio: 3/4;
+            background-color: var(--color-clay);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .portfolio-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .portfolio-item:nth-child(2) {
+            margin-top: var(--spacing-md);
+        }
+
+        .portfolio-item:nth-child(4) {
+            margin-top: var(--spacing-sm);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: var(--spacing-sm);
+            background: linear-gradient(to top, rgba(42, 38, 34, 0.9) 0%, transparent 100%);
+            color: var(--color-sand);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            transform: translateY(0);
+        }
+
+        .portfolio-overlay h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-overlay p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Load More Button */
+        .load-more-container {
+            text-align: center;
+            margin-top: var(--spacing-md);
+        }
+
+        .load-more-btn {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            color: var(--color-charcoal);
+            background: transparent;
+            border: 1px solid var(--color-stone);
+            padding: 1rem 3rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .load-more-btn:hover {
+            background-color: var(--color-charcoal);
+            color: var(--color-sand);
+            border-color: var(--color-charcoal);
+        }
+
+        .load-more-btn.hidden {
+            display: none;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: var(--spacing-xl) var(--spacing-md);
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .contact-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .contact h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-charcoal);
+        }
+
+        .contact p {
+            font-size: 1.1rem;
+            line-height: 2;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-charcoal);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: var(--spacing-sm);
+        }
+
+        .contact-info a {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: var(--color-charcoal);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-info a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 1px;
+            background-color: var(--color-bamboo);
+            transition: width 0.4s ease;
+        }
+
+        .contact-info a:hover {
+            color: var(--color-bamboo);
+        }
+
+        .contact-info a:hover::after {
+            width: 100%;
+        }
+
+        /* Footer */
+        footer {
+            padding: var(--spacing-md);
+            text-align: center;
+            border-top: 1px solid var(--color-clay);
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: var(--color-stone);
+            letter-spacing: 0.1em;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes expandWidth {
+            from {
+                opacity: 0;
+                width: 0;
+            }
+            to {
+                opacity: 1;
+                width: 60px;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --spacing-md: 2rem;
+                --spacing-lg: 3rem;
+                --spacing-xl: 4rem;
+            }
+
+            nav {
+                padding: var(--spacing-xs) var(--spacing-sm);
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio-item:nth-child(2),
+            .portfolio-item:nth-child(4) {
+                margin-top: 0;
+            }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: var(--spacing-sm);
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 1.6s forwards;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 1px;
+            height: 50px;
+            background-color: var(--color-stone);
+            margin: 0 auto 10px;
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        .scroll-indicator p {
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-stone);
+        }
+
+        @keyframes scrollLine {
+            0%, 100% {
+                transform: scaleY(0.3);
+                transform-origin: top;
+            }
+            50% {
+                transform: scaleY(1);
+                transform-origin: top;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Isaac Martinez</div>
+        <ul class="nav-links">
+            <li><a href="#designs">Designs</a></li>
+            <li><a href="#artworks">Artworks</a></li>
+            <li><a href="#sketches">Sketches</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Isaac Martinez</h1>
+            <div class="zen-line"></div>
+        </div>
+    </section>
+
+    <!-- Designs Gallery -->
+    <section id="designs" class="portfolio">
+        <h2 class="section-title">Designs</h2>
+        <div class="portfolio-grid" id="designs-grid">
+            <!-- Images will be added here -->
+        </div>
+        <div class="load-more-container">
+            <button class="load-more-btn" onclick="loadMoreImages('designs')">Load More</button>
+        </div>
+    </section>
+
+    <!-- Artworks Gallery -->
+    <section id="artworks" class="portfolio">
+        <h2 class="section-title">Artworks</h2>
+        <div class="portfolio-grid" id="artworks-grid">
+            <!-- Images will be added here -->
+        </div>
+        <div class="load-more-container">
+            <button class="load-more-btn" onclick="loadMoreImages('artworks')">Load More</button>
+        </div>
+    </section>
+
+    <!-- Sketches Gallery -->
+    <section id="sketches" class="portfolio">
+        <h2 class="section-title">Sketches</h2>
+        <div class="portfolio-grid" id="sketches-grid">
+            <!-- Images will be added here -->
+        </div>
+        <div class="load-more-container">
+            <button class="load-more-btn" onclick="loadMoreImages('sketches')">Load More</button>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="contact-content">
+            <h2>Connect</h2>
+            <div class="zen-line"></div>
+            <div class="contact-info">
+                <a href="mailto:isaacmart212@icloud.com">isaacmart212@icloud.com</a>
+                <a href="tel:+19545911910">954-591-1910</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Isaac Martinez. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Image galleries data structure
+        // TO ADD YOUR IMAGES: Replace the placeholder URLs with paths to your actual images
+        const galleries = {
+            designs: [
+                'Designs/LogoTeeWhite.PNG',
+                'Designs/ButterflyTee.PNG',
+                'Designs/DoveTee.PNG',
+                'Designs/SummerTourTee.PNG',
+                'Designs/IMG_1165.jpg',
+                'Designs/IMG_1167.jpg',
+                'Designs/LogoHoodieBlack.PNG',
+                'Designs/LogoTeeBlack.PNG',
+                'Designs/AcutalLogoTeeBlackFront.PNG',
+            ],
+            artworks: [
+                'Artworks2/IMG_1676.jpg',
+                'Artworks/IMG_5980.jpg',
+                'Artworks/IMG_8951.jpg',
+                'Artworks/IMG_5904.jpg',
+                'Artworks/F7145D53-D283-472A-B59E-63A0F7623D3A.JPG',
+                'Artworks2/IMG_7558.jpg',
+                'Artworks/IMG_1445.JPG',
+                'Artworks/IMG_1678.JPG',
+                'Artworks/IMG_5981.jpg',
+                'Artworks/IMG_5982.jpg',
+                'Artworks/IMG_8399.jpg',
+                'Artworks/IMG_8400.jpg',
+                'Artworks/IMG_9178.jpg',
+                'Artworks/IMG_9190.jpg',
+                'Artworks2/IMG_8050.jpg',
+            ],
+            sketches: [
+                'Sketches/IMG_0616.jpg',
+                'Sketches/IMG_0614.jpg',
+                'Sketches/IMG_0613.jpg',
+                'Sketches/IMG_0615.jpg',
+                'Sketches/IMG_0617.jpg',
+                'Sketches/IMG_0618.jpg',
+                'Sketches/IMG_0787.jpg',
+                'Sketches/IMG_2236.jpg',
+                'Sketches/IMG_2238.jpg',
+                'Sketches/IMG_2240.jpg',
+                'Sketches/IMG_2243.jpg',
+                'Sketches/IMG_2244.jpg',
+                'Sketches/IMG_3017.jpg',
+                'Sketches/IMG_3018.jpg',
+                'Sketches/IMG_3019.jpg',
+                'Sketches/IMG_3020.jpg',
+                'Sketches/IMG_0619.jpg',
+                'Sketches/IMG_0620.jpg'
+            ]
+        };
+
+        // Track how many images are currently displayed for each gallery
+        const displayedCount = {
+            designs: 0,
+            artworks: 0,
+            sketches: 0
+        };
+
+        const imagesPerLoad = 6; // Number of images to load at once
+
+        // Function to create a portfolio item element
+        function createPortfolioItem(imageSrc, index, galleryType) {
+            const item = document.createElement('div');
+            item.className = 'portfolio-item';
+            item.style.transitionDelay = `${(index % imagesPerLoad) * 0.1}s`;
+            
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            img.alt = `${galleryType} ${index + 1}`;
+            
+            item.appendChild(img);
+            return item;
+        }
+
+        // Function to load more images for a specific gallery
+        function loadMoreImages(galleryType) {
+            const grid = document.getElementById(`${galleryType}-grid`);
+            const section = document.getElementById(galleryType);
+            const button = section.querySelector('.load-more-btn');
+            const images = galleries[galleryType];
+            const currentCount = displayedCount[galleryType];
+            
+            // Calculate how many images to add
+            const endIndex = Math.min(currentCount + imagesPerLoad, images.length);
+            
+            // Add new images
+            for (let i = currentCount; i < endIndex; i++) {
+                const item = createPortfolioItem(images[i], i, galleryType);
+                grid.appendChild(item);
+                
+                // Trigger animation
+                setTimeout(() => {
+                    observer.observe(item);
+                }, 50);
+            }
+            
+            // Update count
+            displayedCount[galleryType] = endIndex;
+            
+            // Hide button if all images are loaded
+            if (endIndex >= images.length) {
+                button.classList.add('hidden');
+            }
+        }
+
+        // Initialize galleries on page load
+        function initializeGalleries() {
+            ['designs', 'artworks', 'sketches'].forEach(galleryType => {
+                const images = galleries[galleryType];
+                const section = document.getElementById(galleryType);
+                const button = section.querySelector('.load-more-btn');
+                
+                // If gallery is empty, show message and hide button
+                if (images.length === 0) {
+                    const grid = document.getElementById(`${galleryType}-grid`);
+                    const message = document.createElement('p');
+                    message.style.textAlign = 'center';
+                    message.style.color = 'var(--color-stone)';
+                    message.style.fontSize = '1.1rem';
+                    message.style.padding = 'var(--spacing-md)';
+                    message.textContent = 'Add your images by editing the galleries object in the JavaScript';
+                    grid.appendChild(message);
+                    if (button) button.classList.add('hidden');
+                } else {
+                    // Load initial batch of images
+                    const grid = document.getElementById(`${galleryType}-grid`);
+                    const currentCount = displayedCount[galleryType];
+                    const endIndex = Math.min(currentCount + imagesPerLoad, images.length);
+                    
+                    // Add initial images
+                    for (let i = currentCount; i < endIndex; i++) {
+                        const item = createPortfolioItem(images[i], i, galleryType);
+                        grid.appendChild(item);
+                        
+                        // Trigger animation
+                        setTimeout(() => {
+                            observer.observe(item);
+                        }, 50);
+                    }
+                    
+                    // Update count
+                    displayedCount[galleryType] = endIndex;
+                    
+                    // Hide button if all images are loaded
+                    if (endIndex >= images.length && button) {
+                        button.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.section-title, .contact-content').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Initialize galleries when page loads
+        window.addEventListener('DOMContentLoaded', initializeGalleries);
+    </script>
+</body>
+</html>
